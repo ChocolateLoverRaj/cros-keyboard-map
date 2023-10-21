@@ -5,7 +5,7 @@
 2.     # Copy the file to `/usr/local/bin`
        cd ~/Downloads
        sudo cp chromebook-keyd-config /usr/local/bin
-3.     git clone https://github.com/WeirdTreeThing/cros-keyboard-map
+3.     git clone https://github.com/ChocolateLoverRaj/cros-keyboard-map
 4.     cd cros-keyboard-map
 5.     ./install.sh
 
