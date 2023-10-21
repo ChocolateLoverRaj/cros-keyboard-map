@@ -19,6 +19,7 @@ fi
 
 echo "Installing chromebook-keyd-config.service. Make sure u downloaded the program "chromebook-keyd-config" to /usr/local/bin"
 sudo cp chromebook-keyd-config.service /etc/systemd/system
+sudo mkdir /etc/chromebook-keyd-config
 echo "Enabling chromebook-keyd-config.service"
 sudo systemctl enable --now chromebook-keyd-config.service
 

@@ -116,6 +116,16 @@ backspace = C-A-delete
         + extra_shortcuts
 }
 
+fn read_config() -> Result<String, io::Error> {
+    match fs::read_to_string("/etc/chromebook-keyd-config/keyd.conf") {
+        Ok(contents) => Ok(contents),
+        Err(e) => match e.kind() {
+            io::ErrorKind::NotFound => Ok("".to_owned()),
+            _ => Err(e),
+        },
+    }
+}
+
 pub fn generate_config() -> String {
     create_keyd_config(
         load_physmap_scan_codes()
@@ -123,5 +133,5 @@ pub fn generate_config() -> String {
             .iter()
             .map(|scan_code| scan_code.as_str())
             .collect(),
-    )
+    ) + &read_config().unwrap()
 }
