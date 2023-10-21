@@ -67,7 +67,10 @@ f13 = coffee
 sleep = coffee
 ";
 
-    let meta = "\n[meta]\n";
+    let meta = "
+[meta]
+backspace = delete
+";
     // make fn keys act like fn keys when super is held
     let meta_mappings_non_vivaldi: Vec<_> = physmap
         .iter()
@@ -96,6 +99,7 @@ brightnessdown = kbdillumdown
 brightnessup = kbdillumup
 f6 = kbdillumdown
 f7 = kbdillumup
+meta = capslock
 
 [control]
 f5 = print
