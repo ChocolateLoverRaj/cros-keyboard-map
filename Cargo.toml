@@ -1,5 +1,5 @@
 [package]
-name = "cros-keyboard-map"
+name = "chromebook-keyd-config"
 version = "0.1.0"
 edition = "2021"
 

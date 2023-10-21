@@ -17,6 +17,11 @@ elif [ -f /usr/bin/apk ]; then
 	distro="alpine"
 fi
 
+echo "Installing chromebook-keyd-config.service. Make sure u downloaded the program "chromebook-keyd-config" to /usr/local/bin"
+sudo cp chromebook-keyd-config.service /etc/systemd/system
+echo "Enabling chromebook-keyd-config.service"
+sudo systemctl enable --now chromebook-keyd-config.service
+
 if ! [ -f /usr/bin/keyd ]; then
 	# if keyd isnt installed
 	echo "Installing keyd dependencies"
@@ -55,15 +60,6 @@ if ! [ -f /usr/bin/keyd ]; then
 		;;
 	esac
 fi
-
-echo "Generating config"
-echo "Not implemented"
-exit 1
-# python3 cros-keyboard-map.py
-
-echo "Installing config"
-sudo mkdir -p /etc/keyd
-sudo cp cros.conf /etc/keyd
 
 echo "Enabling keyd"
 case $distro in

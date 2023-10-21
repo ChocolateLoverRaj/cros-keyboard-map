@@ -1,0 +1,10 @@
+[Unit]
+Description=Fuses a live generated keyd config for the current Chromebook.
+
+[Service]
+Restart=always
+Type=simple
+ExecStart=chromebook-keyd-config
+
+[Install]
+WantedBy=keyd.service 

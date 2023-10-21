@@ -1,4 +1,4 @@
-use fuser::{mount2, FileAttr, FileType, Filesystem, MountOption, ReplyAttr};
+use fuser::{mount2, FileAttr, FileType, Filesystem, MountOption};
 use generate_config::generate_config;
 use libc::ENOENT;
 use std::{
@@ -8,6 +8,26 @@ use std::{
 mod generate_config;
 
 const MOUNT_FILE: &str = "/etc/keyd/chromebook.conf";
+
+fn get_file_attr() -> FileAttr {
+    FileAttr {
+        ino: 1,
+        size: generate_config().len() as u64,
+        blocks: 1,
+        atime: UNIX_EPOCH, // 1970-01-01 00:00:00
+        mtime: UNIX_EPOCH,
+        ctime: UNIX_EPOCH,
+        crtime: UNIX_EPOCH,
+        kind: FileType::RegularFile,
+        perm: 0o644,
+        nlink: 1,
+        uid: 501,
+        gid: 20,
+        rdev: 0,
+        flags: 0,
+        blksize: 512,
+    }
+}
 
 struct MyFS {}
 impl Filesystem for MyFS {
@@ -33,26 +53,7 @@ impl Filesystem for MyFS {
 
     fn getattr(&mut self, _req: &fuser::Request, ino: u64, reply: fuser::ReplyAttr) {
         match ino {
-            1 => reply.attr(
-                &Duration::from_nanos(0),
-                &FileAttr {
-                    ino: 1,
-                    size: generate_config().len() as u64,
-                    blocks: 1,
-                    atime: UNIX_EPOCH, // 1970-01-01 00:00:00
-                    mtime: UNIX_EPOCH,
-                    ctime: UNIX_EPOCH,
-                    crtime: UNIX_EPOCH,
-                    kind: FileType::RegularFile,
-                    perm: 0o644,
-                    nlink: 1,
-                    uid: 501,
-                    gid: 20,
-                    rdev: 0,
-                    flags: 0,
-                    blksize: 512,
-                },
-            ),
+            1 => reply.attr(&Duration::from_nanos(0), &get_file_attr()),
             _ => reply.error(ENOENT),
         }
     }
@@ -60,32 +61,11 @@ impl Filesystem for MyFS {
     fn lookup(
         &mut self,
         _req: &fuser::Request<'_>,
-        parent: u64,
+        _parent: u64,
         _name: &std::ffi::OsStr,
         reply: fuser::ReplyEntry,
     ) {
-        println!("{}", parent);
-        reply.entry(
-            &Duration::from_nanos(0),
-            &FileAttr {
-                ino: 1,
-                size: generate_config().len() as u64,
-                blocks: 1,
-                atime: UNIX_EPOCH, // 1970-01-01 00:00:00
-                mtime: UNIX_EPOCH,
-                ctime: UNIX_EPOCH,
-                crtime: UNIX_EPOCH,
-                kind: FileType::RegularFile,
-                perm: 0o644,
-                nlink: 1,
-                uid: 501,
-                gid: 20,
-                rdev: 0,
-                flags: 0,
-                blksize: 512,
-            },
-            0,
-        );
+        reply.entry(&Duration::from_nanos(0), &get_file_attr(), 0);
     }
 }
 
